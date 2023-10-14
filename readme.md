@@ -1,0 +1,1 @@
+Created the dockerfile and image that has nodejs and displays an image on a port. 
