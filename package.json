@@ -1,11 +1,10 @@
 {
-    "name": "node-docker-app",
+    "name": "is-373-auth",
     "version": "1.0.0",
     "scripts": {
       "start": "node index.js"
     },
     "dependencies": {
-      "express": "^4.17.1"
     }
   }
   

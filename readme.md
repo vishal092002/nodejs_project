@@ -1,1 +1,7 @@
-Created the dockerfile and image that has nodejs and displays an image on a port. 
+# IS 373
+Authentication module for IS 373 group project. 
+https://img.shields.io/github/contributors/vishal092002/nodejs_project
+https://img.shields.io/github/commit-activity/t/vishal092002/nodejs_project
+## Running the project
+1. Clone the repository
+2. Run `docker-compose up --build`
