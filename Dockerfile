@@ -8,8 +8,6 @@ RUN npm install
 # Installing the dependencies from the package.json file
 COPY . .
 # Copying the rest of the files to the root of the container
-EXPOSE 3000
-# Exposing port 3000
 ENTRYPOINT [ "npm", "run" ]
 # Setting the entrypoint to npm run
 CMD ["dev" ]
