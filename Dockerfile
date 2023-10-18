@@ -1,7 +1,7 @@
-FROM node:lts 
-# Using the LTS version of node for stability
+FROM node:lts-alpine3.18
+# Using the LTS version of node for stability and the alpine version of the image for a smaller image size
 WORKDIR /app
-# setting the working directory to /app
+# setting the working directory to /app **in the container**
 COPY package*.json ./ 
 # Copying the package.json file to the root of the container
 RUN npm install
