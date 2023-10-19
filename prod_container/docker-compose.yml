@@ -8,9 +8,9 @@
 version: "3.8"
 services:
   nodejs_project:
-    image: benjaminshuster/nodejs_project #this is the image on dockerhub (https://hub.docker.com/r/benjaminshuster/nodejs_project)
+    image: benjaminshuster/nodejs_project:watchtower #this is the image on dockerhub (https://hub.docker.com/r/benjaminshuster/nodejs_project)
     pull_policy: always #always pull the most recent version of the image
     ports:
       - 8080:3000  #port 8080 on host, 3000 in container so open localhost:8080
     labels:
-        com.centurylinklabs.watchtower.enable: true #this is the label that tells watchtower to update this container when a new version of the image is pushed to dockerhub
+      com.centurylinklabs.watchtower.enable: true #this is the label that tells watchtower to update this container when a new version of the image is pushed to dockerhub
