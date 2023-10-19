@@ -1,0 +1,11 @@
+version: "3.8"
+services:
+  nodejs_project:
+    image: benjaminshuster/nodejs_project
+    container_name: nodejs_project2
+    pull_policy: always
+    restart: always
+    ports:
+      - 8080:3000  #port 8080 on host, 3000 in container so open localhost:8080
+    labels:
+      - com.centurylinklabs.watchtower.enable=true

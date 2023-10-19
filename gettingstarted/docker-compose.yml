@@ -4,7 +4,7 @@ services:
       context: .
       dockerfile: Dockerfile  
     # command: build # override the default command (dev) in the Dockerfile
-    container_name: node_project
+    container_name: nodejs_project
     #the repo name in github
     ports:
       - "${PORT}:3000"
