@@ -7,10 +7,12 @@ services:
     container_name: nodejs_project
     #the repo name in github
     ports:
-      - "${PORT}:3000"
+      - 3009:3000
       # edit the port number in the .env file (enviroment variables)
     volumes:
     - ./:/app
     - /app/node_modules
     - /app/.next
+    labels:
+      - com.centurylinklabs.watchtower.enable=true
       

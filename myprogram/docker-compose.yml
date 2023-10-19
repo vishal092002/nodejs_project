@@ -1,17 +1,26 @@
-services:
-  main:
-    # build: 
-    #   context: .
-    #   dockerfile: Dockerfile  
-    image: benjaminshuster/nodejs_project
-    # command: build # override the default command (dev) in the Dockerfile
-    container_name: nodejs_project
-    #the repo name in github
-    ports:
-      - "${PORT}:3000"
-      # edit the port number in the .env file (enviroment variables)
-    volumes:
-    - ./:/app
-    - /app/node_modules
-    - /app/.next
+# services:
+#   main:
+#     # build: 
+#     #   context: .
+#     #   dockerfile: Dockerfile  
+#     image: benjaminshuster/nodejs_project
+#     # command: build # override the default command (dev) in the Dockerfile
+#     container_name: nodejs_project
+#     #the repo name in github
+#     ports:
+#       - "${PORT}:3000"
+#       # edit the port number in the .env file (enviroment variables)
+#     volumes:
+#     - ./:/app
+#     - /app/node_modules
+#     - /app/.next
       
+version: "3.8"
+services:
+  nodejs_project:
+    image: benjaminshuster/nodejs_project
+    pull_policy: always
+    ports:
+      - 3000:3000  #port 8080 on host, 3000 in container so open localhost:8080
+    labels:
+        com.centurylinklabs.watchtower.enable: true

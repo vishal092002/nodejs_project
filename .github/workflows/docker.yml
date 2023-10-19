@@ -5,6 +5,7 @@ on:
     branches:
       - 'master'
       -  "main" 
+      -  "watchtower" #testing, remove later 
   pull_request:
      branches: 
       -  "main" 
