@@ -8,7 +8,7 @@ services: # services are the containers we want to run
     watchtower:
       image: containrrr/watchtower # this is the image we want to run, https://hub.docker.com/r/containrrr/watchtower
       container_name: watchtower #this is the name of the container, its just a label
-      command: --interval 30 --label-enable --cleanup # we pass some arguments to the container, these are setting the interval to 30 seconds, enabling labels (see below) and cleaning up old images
+      command: --interval 30 --label-enable --cleanup --debug # we pass some arguments to the container, these are setting the interval to 30 seconds, enabling labels (see below) and cleaning up old images
       volumes:
         - /var/run/docker.sock:/var/run/docker.sock # this is the docker socket, we need to mount this so watchtower can talk to docker
       labels:
