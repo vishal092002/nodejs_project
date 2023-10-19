@@ -36,7 +36,7 @@ jobs:
       - name: Build and push #this is the name of the step
         uses: docker/build-push-action@v2 #this is the action that will be used to build and push the image to dockerhub
         with: 
-          context: . 
+          context: project #this is the directory that the Dockerfile is in
           push: true 
           tags: ${{ steps.meta.outputs.tags }} 
           labels: ${{ steps.meta.outputs.labels }}
