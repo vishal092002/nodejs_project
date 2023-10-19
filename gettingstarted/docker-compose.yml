@@ -1,3 +1,7 @@
+########################
+# This was used to get the image to docker hub in the first place, but now it is not needed
+########################
+
 services:
   main:
     build: 
