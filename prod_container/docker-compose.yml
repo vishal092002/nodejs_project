@@ -8,7 +8,7 @@
 version: "3.8"
 services:
   nodejs_project:
-    image: benjaminshuster/nodejs_project:main #this is the image on dockerhub (https://hub.docker.com/r/benjaminshuster/nodejs_project) 
+    image: benjaminshuster/nodejs_project:latest #this is the image on dockerhub (https://hub.docker.com/r/benjaminshuster/nodejs_project) 
     # the tag (main) is the branch of the repo that the image is built from
     pull_policy: always #always pull the most recent version of the image
     ports:
