@@ -37,5 +37,5 @@ jobs:
         with: 
           context: project #this is the directory that the Dockerfile is in
           push: true 
-          tags: ${{ steps.meta.outputs.tags }} 
+          tags: ${{ secrets.DOCKER_USERNAME }}/nodejs_project:${{ steps.vars.outputs.tag }}, ${{ secrets.DOCKER_USERNAME }}/nodejs_project:latest
           labels: ${{ steps.meta.outputs.labels }}
