@@ -1,3 +1,6 @@
+# this is the dockerfile for the project
+# this file is used to show docker how to build the image
+
 FROM node:lts-alpine3.18
 # Using the LTS version of node for stability and the alpine version of the image for a smaller image size
 WORKDIR /app

@@ -1,0 +1,41 @@
+# this is the workflow file for pushing to dockerhub when a push is made to the main branch
+# this uses Github Actions to build and push the image to dockerhub
+
+name: Docker Workflow 1 #this is the name of the workflow
+
+on:
+  push:
+    branches: # a push to these branchs will trigger the workflow
+      - 'master' 
+      -  "main" 
+  pull_request: # a pull request to these branchs will trigger the workflow
+     branches: 
+      -  "main" 
+      - "master"
+
+jobs:
+  build-container:
+    runs-on: ubuntu-latest #the OS that the workflow will run on
+    steps:
+      - name: Checkout code  #this is the name of the step
+        uses: actions/checkout@v2 #this is the action that will be used to checkout the code (to get the code in the repo)
+
+      - name: Login to DockerHub #this is the name of the step
+        uses: docker/login-action@v1 #this is the action that will be used to login to dockerhub
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }} #these are the secrets that are stored in the repo (from the settings tab)
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Extract metadata (tags, labels) for Docker #this is the name of the step
+        id: meta #this is the id of the step
+        uses: docker/metadata-action@v3 #this is the action that will be used to extract the metadata
+        with: #these are the inputs for the action
+          images: benjaminshuster/nodejs_project #this is the name of the image that will be built and pushed to dockerhub
+
+      - name: Build and push #this is the name of the step
+        uses: docker/build-push-action@v2 #this is the action that will be used to build and push the image to dockerhub
+        with: 
+          context: project #this is the directory that the Dockerfile is in
+          push: true 
+          tags: ${{ steps.meta.outputs.tags }} 
+          labels: ${{ steps.meta.outputs.labels }}

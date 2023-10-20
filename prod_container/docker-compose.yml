@@ -1,0 +1,17 @@
+#  This is a docker-compose file for the nodejs_project container (which is the image for our code)
+#  the container is set to run on port 3000, so you can access it at localhost:3000
+# it will have the most recent version of the image on dockerhub, and will update automatically when a new version is pushed to dockerhub due to having the watchtower label (com.centurylinklabs.watchtower.enable: true) look at the docker-compose in the watchtower folder for more info on that
+# to run this, "docker-compose up" in the same directory as this file
+
+
+
+version: "3.8"
+services:
+  nodejs_project:
+    image: benjaminshuster/nodejs_project:main #this is the image on dockerhub (https://hub.docker.com/r/benjaminshuster/nodejs_project) 
+    # the tag (main) is the branch of the repo that the image is built from
+    pull_policy: always #always pull the most recent version of the image
+    ports:
+      - 8080:3000  #port 8080 on host, 3000 in container so open localhost:8080
+    labels:
+      com.centurylinklabs.watchtower.enable: true #this is the label that tells watchtower to update this container when a new version of the image is pushed to dockerhub
