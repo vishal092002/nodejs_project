@@ -8,7 +8,6 @@ on:
     branches: # a push to these branchs will trigger the workflow
       - 'master' 
       -  "main" 
-      -  "watchtower" #testing, remove later 
   pull_request: # a pull request to these branchs will trigger the workflow
      branches: 
       -  "main" 
