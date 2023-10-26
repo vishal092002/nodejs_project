@@ -2,3 +2,9 @@
   font-size: 1.5rem;
   font-weight: 600;
 }
+.JWT{
+  max-width: 60%;
+  word-wrap: break-word;
+  white-space: pre-wrap;
+  margin: 0 auto;
+}
