@@ -1,8 +1,10 @@
-const { PrismaClient } = require('@prisma/client')
+import { addFakeUserToDatabase } from "@/lib/fakerdata"
+import prisma from "@/lib/prismaClient"
+
 export default async function Page() {
     
-const prisma = new PrismaClient()
-let user = await prisma.user.findMany()
+
+let user = await prisma.pets.findMany()
 if(!user.length){
     user = await prisma.user.create({
         data:{
@@ -10,6 +12,9 @@ if(!user.length){
             email:'im@your.house',
         }
     })
+}
+if(user.length<26){
+    addFakeUserToDatabase({amount:1})
 }
 console.log(user)
 return (
