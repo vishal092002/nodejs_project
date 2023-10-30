@@ -15,8 +15,12 @@
     "react-dom": "^18"
   },
   "devDependencies": {
+    "@faker-js/faker": "^8.2.0",
     "eslint": "^8",
     "eslint-config-next": "13.5.4",
     "prisma": "^5.5.2"
+  },
+  "prisma": {
+    "seed": "node src/lib/seed.js"
   }
 }
