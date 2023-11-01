@@ -10,14 +10,10 @@ coverage
 
 # next.js
 .next
-<<<<<<< HEAD
-/out/
-=======
 out
->>>>>>> 6e2cb1c51f4ad933e31d904220e09ebbdc27e472
 
 # production
-build
+/build
 
 # misc
 .DS_Store
