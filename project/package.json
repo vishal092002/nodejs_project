@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "test": "playwright test"
   },
   "dependencies": {
     "@prisma/client": "^5.5.2",
@@ -18,7 +19,9 @@
     "@faker-js/faker": "^8.2.0",
     "eslint": "^8",
     "eslint-config-next": "13.5.4",
-    "prisma": "^5.5.2"
+    "prisma": "^5.5.2",
+    "@playwright/test": "^1.39.0",
+    "@types/node": "^20.8.10"
   },
   "prisma": {
     "seed": "node src/lib/seed.js"

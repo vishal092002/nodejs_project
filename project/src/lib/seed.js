@@ -33,7 +33,18 @@ async function addFakeUserToDatabase({amount = 1}) {//add a randomly generated u
 }
 
 
-addFakeUserToDatabase({amount: 10}) //call the function to add 10 users to the database (this whole script is run when running npx prisma db seed or npx prisma migrate dev)
+addFakeUserToDatabase({amount: 10}).then(()=>{
+    prisma.$disconnect()
+})
+.catch(async (e) => {
+    console.error(e);
+    await prisma.$disconnect();
+    process.exit();
+  });
+
+
+//call the function to add 10 users to the database (this whole script is run when running npx prisma db seed or npx prisma migrate dev)
 module.exports = {
     addFakeUserToDatabase,//export the function so it can also be used in other files
+    generateFakeUser,
 }

@@ -38,7 +38,7 @@ return (
         // print the user data
         user.map((user)=>{
             return(
-                <div>
+                <div key={user.id}>
                     <h3>{user.name}</h3>
                     {Object.keys(user).map((key)=>{
                         return(
