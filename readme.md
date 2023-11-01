@@ -26,4 +26,14 @@ cd project
 npm install # if you haven't already
 npm run dev # run the dev server
 ```
- 
+# start the next.js server 
+npm run dev 
+
+# Open the site to make sure that server is running
+http://localhost:3000/
+
+# To see the list of records go to the following: 
+http://localhost:3000/prisma
+
+# add fake data. 
+npx prisma db seed 
