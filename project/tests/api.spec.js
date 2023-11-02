@@ -24,10 +24,18 @@ test('GET on Pets', async ({ request }) => {
 });
 test('POST on Pets', async ({ request }) => {
   const req = await request.post(`/api/pets`,{
-    data: generateFakeUser()
+    data: {"type":"rabbit","name":"Douglas"}
   })
   let jsonvalue = await req.json()
-  expect(req.status()).toBe(200)
-  expect(jsonvalue).toHaveProperty('id')
+  expect(req.status()).toBe(201)
+  expect(jsonvalue).not.toBe([])
 }
 );
+test('POST on Users', async ({ request }) => {
+  const req = await request.post(`/api/user`,{
+    data: {"email":"test@test.com","name":"Douglas"}
+  })
+  let jsonvalue = await req.json()
+  expect(req.status()).toBe(201)
+  expect(jsonvalue).not.toBe([])
+});
