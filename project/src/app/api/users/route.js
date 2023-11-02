@@ -1,12 +1,12 @@
-import prisma = require("@/lib/prismaClient");
+let prisma = require("@/lib/prismaClient");
 import { NextResponse } from "next/server";
 
-export async function GET(request: Request) {
+export async function GET(request) {
   const users = await prisma.user.findMany();
   return NextResponse.json(users);
 }
 
-export async function POST(request: Request) {
+export async function POST(request) {
   try {
     const json = await request.json();
 
