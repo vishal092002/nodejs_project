@@ -18,8 +18,10 @@ jobs:
       working-directory: ./project
     - name: Install Playwright Browsers
       run: npx playwright install --with-deps
+      working-directory: ./project
     - name: Run Playwright tests
       run: npx playwright test
+      working-directory: ./project
     - uses: actions/upload-artifact@v3
       if: always()
       with:
