@@ -75,3 +75,9 @@ this is needed to run the prisma client (which is used to interact with the data
 ```bash
 npx prisma generate # in the project directory
 ```
+
+### To push the database schema to the database
+this is needed to run the prisma client (which is used to interact with the database)
+```bash
+npx prisma db push # in the project directory
+```
