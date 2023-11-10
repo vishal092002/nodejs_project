@@ -30,7 +30,7 @@ export default async function Home() {
 </>
       )}
 
-   
+   <Form></Form>
     </main>
   )
 }
