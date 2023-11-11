@@ -27,8 +27,7 @@ export default async function processForm(formData) {
                     const newPet = await prisma.pet.create({
                         data: {
                             petType,
-                            petName,
-                            id
+                            petName
                         }
                     });
                     return; //Ask what I should return
@@ -44,69 +43,128 @@ export default async function processForm(formData) {
             //Making sure to fetch correct schema type
             try {
                 if (id) {
-                    if (schema === "user") {
-                        //Retrieve user by id
-                        await fetch("api/"+schema);
+                        //Retrieve schema by id
+                        let fetch = await fetch("api/${schema}/${id}");
+                        let data = await fetch.json();
 
                         //Making sure user exists
-                        if (user) {
+                        if (fetch.ok) {
                             //display user or navigate to page to display user?
-                            return;
+                            return data;
                         } else {
                             //Handling case where user is not found
-                            return { error: "User not found." };
+                            return { error: "Schema not found." };
                         }
-                    } else if (schema === "pet") {
-                        //Retrieve pet by id. Make sure to also have current user's id?
-                        //EX: (where userId: (session user id, etc.) and id: parseInt(id)
-                        /** const pet = await prisma.pets.findUnique({
-                            where: {
-                                id: parseInt(id),
-                                userId: /* session user id
-                            }
-                        }); 
-                        */
-                        return;
-                    } else /* Unexpected schema */ {
-                        return;
-                    }
+                        return
+                } else {
+                    console.error("ID cannot be null.", error);
+                    return { error: "ID cannot be null." };
                 }
             } catch (error) {
                 console.error("Error retrieving record:", error);
                 return { error: "Error retrieving record." };
             }
         case "PATCH":
-            //Making sure to fetch correct schema type
-            if (schema === "user") {
-                //Making sure "user" with id provided in formData exists, else return error. Not sure if should use a try/catch instead
-                /* 
-                if (user.id exists)
-                    update user.name as name
-                    update uer.email as email
-                else
-                    return some type of error msg 
-                */
+            // Making sure to fetch the correct schema type
+            try {
+                if (schema === "user") {
+                    // Update user if user with the provided ID exists
+                    const existingUser = await prisma.user.findUnique({
+                        where: {
+                            id: parseInt(id),
+                        },
+                    });
 
-            } else /* schema == "pet" */ {
-                //Making sure "pet" with id provided in formData exists, else return error. Not sure if should use a try/catch instead
-                /* 
-                if (pet.id exists)
-                    display user information
-                else
-                    return some type of error match 
-                */
+                    if (existingUser) {
+                        // Update user name and email
+                        const updatedUser = await prisma.user.update({
+                            where: {
+                                id: existingUser.id,
+                            },
+                            data: {
+                                name,
+                                email,
+                            },
+                        });
+
+                        return updatedUser; // Return the updated user
+                    } else {
+                        // Handle case where user is not found
+                        return { error: "User not found." };
+                    }
+                } else /* schema == "pet" */ {
+                    // Making sure "pet" with id provided in formData exists, else return error
+                    const existingPet = await prisma.pet.findUnique({
+                        where: {
+                            id: parseInt(id),
+                        },
+                    });
+
+                    if (existingPet) {
+                        // Display pet information (adjust as needed)
+                        return existingPet;
+                    } else {
+                        // Handle case where pet is not found
+                        return { error: "Pet not found." };
+                    }
+                }
+            } catch (error) {
+                console.error("Error updating record:", error);
+                return { error: "Error updating record." };
             }
-            break;
         case "DELETE":
-            //Making sure to access correct schemas
-            if (schema === "user") {
+            // Making sure to access correct schemas
+            try {
+                if (schema === "user") {
+                    // Delete user if user with the provided ID exists
+                    const existingUser = await prisma.user.findUnique({
+                        where: {
+                            id: parseInt(id),
+                        },
+                    });
 
-            } else /* schema == "pet" */ {
+                    if (existingUser) {
+                        // Delete user
+                        await prisma.user.delete({
+                            where: {
+                                id: existingUser.id,
+                            },
+                        });
 
+                        return { message: "User deleted successfully." };
+                    } else {
+                        // Handle case where user is not found
+                        return { error: "User not found." };
+                    }
+                } else /* schema == "pet" */ {
+                    // Delete pet if pet with the provided ID exists
+                    const existingPet = await prisma.pet.findUnique({
+                        where: {
+                            id: parseInt(id),
+                        },
+                    });
+
+                    if (existingPet) {
+                        // Delete pet
+                        await prisma.pet.delete({
+                            where: {
+                                id: existingPet.id,
+                            },
+                        });
+
+                        return { message: "Pet deleted successfully." };
+                    } else {
+                        // Handle case where pet is not found
+                        return { error: "Pet not found." };
+                    }
+                }
+            } catch (error) {
+                console.error("Error deleting record:", error);
+                return { error: "Error deleting record." };
             }
-            break;
+
         default:
-            //Error handling in case there we get unexpected value for method
-            break; 
+            // Error handling in case there is an unexpected value for the method
+            return { error: "Unexpected method." };
     }
 };
