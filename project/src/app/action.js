@@ -23,31 +23,16 @@ let fetchUrl=baseURL+"/api/"+schema+"/" //create the fetch url based on the sche
 if(id&&method!=="POST"){
     fetchUrl=fetchUrl+id; //if we have an id and the method is not POST (POST is the only method that doesn't need an id) then add the id to the fetch url
 }
-let fetchData={ cache: 'no-store' }; //Next.js is a stupid poopoo head and caches fetch requests, so we need to add this to the fetch request to make sure it doesn't cache
-switch (method) { //check the method and add the appropriate headers and body
-    // DELETE don't have a body, so we don't need to add one - we just need to add the method
-case "DELETE":
-    Object.assign(fetchData,{
-        "method":method
-    });
-break;
-//POST and PATCH do have a body, so we need to add one that is the dataJson object we created earlier
-case "POST":
-case "PATCH":
-   Object.assign(fetchData,{
-    "method":method,
-    "headers":{
-        "content-type":"application/json",
-    },
-    "body":JSON.stringify(dataJson),
-    });
-    break;
-//GET doesn't have a body, so we don't need to add one - we don't even need to add the method, because GET is the default method
-case "GET":
-  default:
-    //do nothing ... maybe add a default case that throws an error?
-    break;
+let fetchData={  "method": method, "cache": 'no-store' }; //Next.js is a stupid poopoo head and caches fetch requests, so we need to add this to the fetch 
+if(method==="POST"||method==="PATCH"){//check the method and add the appropriate headers and body
+    Object.assign(fetchData,{//POST and PATCH have a body, so we need to add one that is the dataJson object we created earlier
+        "headers":{
+            "content-type":"application/json",
+        },
+        "body":JSON.stringify(dataJson),
+        });
 }
+
 let data = await fetch(fetchUrl,fetchData); //fetch the data with the fetch url and the fetch data we created earlier
 try{
    let json = await data.json(); //try to parse the data as JSON
