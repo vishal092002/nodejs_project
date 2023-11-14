@@ -1,6 +1,7 @@
 import styles from './page.module.css' // Import css modules stylesheet as styles
 import { getSession } from "@auth0/nextjs-auth0";
 import Form from "@/components/Form";
+import processForm from './action';
 
 export default async function Home() {
   const session = await getSession();
@@ -27,7 +28,7 @@ export default async function Home() {
           ))}
         </pre>      
       </>)}
-      <Form></Form>
+      <Form processForm={processForm}/>{/* pass the processForm function to the Form component b/c we can only get it in a server context for some reason */}
     </main>
   )
 }
