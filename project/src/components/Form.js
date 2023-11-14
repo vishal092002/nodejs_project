@@ -25,7 +25,7 @@ export default function Form() {
                 <input type="radio" name="schema" id="user" value="User" defaultChecked="true"
                     onChange={() => setSelectedSchema('User')} />
                 <label htmlFor="schema">Pet </label>
-                <input type="radio" name="schema" id="pet" value="Pet" onChange={() => setSelectedSchema('Pet')} />
+                <input type="radio" name="schema" id="pets" value="Pet" onChange={() => setSelectedSchema('Pet')} />
             </div>
             <div className="id">
                 <label htmlFor="id">ID (Leave empty for a new user): </label>
