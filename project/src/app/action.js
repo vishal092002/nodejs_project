@@ -15,7 +15,7 @@ export default async function processForm(previousState, FormData){
         email && { email: email },
         name && { name: name },
         petType && { type: petType },
-        petName && { petName: petName }
+        petName && { name: petName }
       );
 
 let fetchUrl=baseURL+"/api/"+schema+"/" //create the fetch url based on the schema and the method
@@ -32,7 +32,7 @@ if(method==="POST"||method==="PATCH"){//check the method and add the appropriate
         "body":JSON.stringify(dataJson),
         });
 }
-
+console.log(fetchUrl,fetchData);
 let data = await fetch(fetchUrl,fetchData); //fetch the data with the fetch url and the fetch data we created earlier
 try{
    let json = await data.json(); //try to parse the data as JSON

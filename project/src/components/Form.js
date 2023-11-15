@@ -20,7 +20,7 @@ const [state, formAction] = useFormState(processForm,result);  //a new react hoo
         <label htmlFor="user">Schema: User </label>
         <input type="radio" name="schema" id="user" value="user"  checked={selectedSchema==="user"} onChange={() => setSelectedSchema('user')}/>
          <br />
-        <label htmlFor="pet">Schema:     Pet </label>
+        <label htmlFor="pet">Schema:  Pet </label>
         <input type="radio" name="schema" id="pet" value="pets" checked={selectedSchema==="pets"} onChange={() => setSelectedSchema('pets')}/>
       </div>
 
