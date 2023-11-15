@@ -8,7 +8,7 @@ let [origin, setOrigin] = useState('') //set the origin to the current window lo
 useEffect(() => {
   setOrigin(window.location.origin) //this is in a useEffect because we can't get the window object on the server and useEffect only runs on the client
 }, [])
-let FormElms = useRef({id: null, name: null, email: null, petType: null, petName: null,userID: null, method: null, schemaUser: null, schemaPet: null});
+let FormElms = useRef({id: null, name: null, email: null, petType: null, petName: null,userID: null, method: null});
     const [selectedSchema, setSelectedSchema] = useState('user');//set the default schema to user, this will be used to determine which radio button is selected
 let result ={} // the default result object, this will be used to store the result of the form submission
 const [state, formAction] = useFormState(processForm,result);  //a new react hook (https://react.dev/reference/react-dom/hooks/useFormStatus) that is like useState but it get the result of the form submission in the server action and can send it back to the client  -this takes in the form action we make and returns a new form action that we can use in the form action attribute, it also takes in the default result object and returns the result object with the data from the form submission
@@ -18,14 +18,10 @@ const [state, formAction] = useFormState(processForm,result);  //a new react hoo
         <input type="hidden" name="BASE_URL" value={origin} />
             <div className="schema">
         <label htmlFor="user">Schema: User </label>
-        <input type="radio" name="schema" id="user" value="user"  checked={selectedSchema==="user"} onChange={() => setSelectedSchema('user')} ref={ref => {
-    FormElms.current.schemaUser = ref
-  }}/>
+        <input type="radio" name="schema" id="user" value="user"  checked={selectedSchema==="user"} onChange={() => setSelectedSchema('user')}/>
          <br />
         <label htmlFor="pet">Schema:     Pet </label>
-        <input type="radio" name="schema" id="pet" value="pets" checked={selectedSchema==="pets"} onChange={() => setSelectedSchema('pets')} ref={ref => {
-    FormElms.current.schemaPet = ref
-  }}/>
+        <input type="radio" name="schema" id="pet" value="pets" checked={selectedSchema==="pets"} onChange={() => setSelectedSchema('pets')}/>
       </div>
 
 
@@ -79,7 +75,8 @@ const [state, formAction] = useFormState(processForm,result);  //a new react hoo
         <input type="submit" value="Submit" />
       </div>
     </form>
-    <DataTable FormElms={FormElms} state={state} baseurl={origin} action={formAction}/>
+    <DataTable FormElms={FormElms} state={state} baseurl={origin} action={formAction} selectedSchema={selectedSchema}
+    />
 
       </>
     );

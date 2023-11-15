@@ -1,12 +1,12 @@
 "use client";
-export default function DataTable({state, FormElms, baseurl, action}) {
+export default function DataTable({state, FormElms, baseurl, action,selectedSchema}) {
     return (
         <>
             <h1>Result</h1>        
                                 <form action={action}>   
                                    <input type="hidden" name="method" value="GET" />
                                    <input type="hidden" name="BASE_URL" value={baseurl} />
-                                   <input type="hidden" name="schema" value={FormElms.current.schemaUser?"user":FormElms.current.schemaPets?"pets":""} />
+                                   <input type="hidden" name="schema" value={selectedSchema} />
                                    <input type="submit" value="Refresh" />
                                </form>
             {state && state.data && state.data.length > 0 ? (
@@ -59,11 +59,11 @@ export default function DataTable({state, FormElms, baseurl, action}) {
                                     </button>
                                 </td>
                                 <td>
-                                <form action={action} method="DELETE">
+                                <form action={action}>
                                     <input type="hidden" name="id" value={item.id} />
                                     <input type="hidden" name="method" value="DELETE" />
                                     <input type="hidden" name="BASE_URL" value={baseurl} />
-                                    <input type="hidden" name="schema" value={FormElms.current.schemaUser?"user":FormElms.current.schemaPets?"pets":""} />
+                                    <input type="hidden" name="schema" value={selectedSchema} />
                                     <input type="submit" value="Delete" />
                                 </form>
                                 </td>
