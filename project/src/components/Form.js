@@ -8,14 +8,20 @@ let [origin, setOrigin] = useState('') //set the origin to the current window lo
 useEffect(() => {
   setOrigin(window.location.origin) //this is in a useEffect because we can't get the window object on the server and useEffect only runs on the client
 }, [])
+let [CSRFToken, setCSRFToken] = useState(csrfToken)
 let FormElms = useRef({id: null, name: null, email: null, petType: null, petName: null,userID: null, method: null});
     const [selectedSchema, setSelectedSchema] = useState('user');//set the default schema to user, this will be used to determine which radio button is selected
 let result ={} // the default result object, this will be used to store the result of the form submission
 const [state, formAction] = useFormState(processForm,result);  //a new react hook (https://react.dev/reference/react-dom/hooks/useFormStatus) that is like useState but it get the result of the form submission in the server action and can send it back to the client  -this takes in the form action we make and returns a new form action that we can use in the form action attribute, it also takes in the default result object and returns the result object with the data from the form submission
     return (
       <>
+      <br />
+      <button onClick={() => {
+        setCSRFToken('missing')
+      }}>{CSRFToken==='missing'?"Removed":"Remove CSRF Token"}
+      </button>
         <form action={formAction}>
-        <input type="hidden" name="csrf_token" value={csrfToken} />
+        <input type="hidden" name="csrf_token" value={CSRFToken} />
         <input type="hidden" name="BASE_URL" value={origin} />
             <div className="schema">
         <label htmlFor="user">Schema: User </label>
@@ -76,7 +82,7 @@ const [state, formAction] = useFormState(processForm,result);  //a new react hoo
         <input type="submit" value="Submit" />
       </div>
     </form>
-    <DataTable FormElms={FormElms} state={state} baseurl={origin} action={formAction} selectedSchema={selectedSchema} csrfToken={csrfToken}
+    <DataTable FormElms={FormElms} state={state} baseurl={origin} action={formAction} selectedSchema={selectedSchema} csrfToken={CSRFToken}
     />
 
       </>
