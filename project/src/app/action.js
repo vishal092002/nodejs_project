@@ -39,7 +39,7 @@ try{
     Object.assign(previousState,{"data":Array.isArray(json)?json:[json],"error":null,"code":data.status}); //if it is JSON, then add it to the previous state object
 }catch(e){
    let json =[] //if it isn't JSON, then we will just add the data as a string to the previous state object and set the error and code properties
-    Object.assign(previousState,{"error":data.statusText, "code":data.status,"data":json});
+    Object.assign(previousState?previousState:{},{"error":data.statusText, "code":data.status,"data":json});
 }
 return previousState; //return the previous state object regardless of whether or not we were able to parse the data as JSON
 }

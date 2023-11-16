@@ -1,5 +1,5 @@
 "use client";
-export default function DataTable({state, FormElms, baseurl, action,selectedSchema}) {
+export default function DataTable({state, FormElms, baseurl, action, selectedSchema, csrfToken}) {
     return (
         <>
             <h1>Result</h1>        
@@ -7,7 +7,8 @@ export default function DataTable({state, FormElms, baseurl, action,selectedSche
                                    <input type="hidden" name="method" value="GET" />
                                    <input type="hidden" name="BASE_URL" value={baseurl} />
                                    <input type="hidden" name="schema" value={selectedSchema} />
-                                   <input type="submit" value="Refresh" />
+                                   <input type="hidden" name="csrf_token" value={csrfToken} />
+                                   <input type="submit" value="Refresh Data" /> 
                                </form>
             {state && state.data && state.data.length > 0 ? (
                 <table>
@@ -64,6 +65,7 @@ export default function DataTable({state, FormElms, baseurl, action,selectedSche
                                     <input type="hidden" name="method" value="DELETE" />
                                     <input type="hidden" name="BASE_URL" value={baseurl} />
                                     <input type="hidden" name="schema" value={selectedSchema} />
+                                    <input type="hidden" name="csrf_token" value={csrfToken} />
                                     <input type="submit" value="Delete" />
                                 </form>
                                 </td>

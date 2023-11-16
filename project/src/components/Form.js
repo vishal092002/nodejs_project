@@ -3,7 +3,7 @@ import { useFormState } from 'react-dom'
 import { useEffect, useRef, useState } from "react";
 import DataTable from './DataTable';
 
-export default function Form({processForm}) {
+export default function Form({processForm, csrfToken}) {
 let [origin, setOrigin] = useState('') //set the origin to the current window location, we need this for the form action to know where to send the data since we are using a relative path in the action
 useEffect(() => {
   setOrigin(window.location.origin) //this is in a useEffect because we can't get the window object on the server and useEffect only runs on the client
@@ -15,6 +15,7 @@ const [state, formAction] = useFormState(processForm,result);  //a new react hoo
     return (
       <>
         <form action={formAction}>
+        <input type="hidden" name="csrf_token" value={csrfToken} />
         <input type="hidden" name="BASE_URL" value={origin} />
             <div className="schema">
         <label htmlFor="user">Schema: User </label>
@@ -75,7 +76,7 @@ const [state, formAction] = useFormState(processForm,result);  //a new react hoo
         <input type="submit" value="Submit" />
       </div>
     </form>
-    <DataTable FormElms={FormElms} state={state} baseurl={origin} action={formAction} selectedSchema={selectedSchema}
+    <DataTable FormElms={FormElms} state={state} baseurl={origin} action={formAction} selectedSchema={selectedSchema} csrfToken={csrfToken}
     />
 
       </>
