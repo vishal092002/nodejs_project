@@ -23,8 +23,8 @@ model Pets {
   id        Int      @id @default(autoincrement())
   type      String
   name      String?
+  userId    Int?
+  User      User?    @relation(fields: [userId], references: [id])
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  User      User?    @relation(fields: [userId], references: [id])
-  userId    Int?
 }
