@@ -5,9 +5,12 @@ import processForm from './action';
 import { headers } from 'next/headers';
 export default async function Home() {
   let session = null;
+  let sessionError = null;
   try {
     session = await getSession();
   } catch (error) {
+  console.log(error)
+  sessionError = error;
   session = {}
   }
   let loggedIn = session && session.user && session.user["name"];
@@ -16,8 +19,8 @@ export default async function Home() {
   return ( 
     <main className={styles.main}> 
       <h1 className={styles.title}>Hello {loggedIn ? session.user["name"] : "World"}!</h1>
-      {!loggedIn && (<>
-        <p style={{textAlign: "center",color: "red"}}>You are missing the .env file</p>
+      {sessionError && (<>
+        <p style={{textAlign: "center",color: "red"}}>You are probably missing the .env file</p>
       </>)}
       <a href={loggedIn ? "/api/auth/logout" : "/api/auth/login"}>{loggedIn ? "Logout" : "Login"}</a>
       {loggedIn && (<>
