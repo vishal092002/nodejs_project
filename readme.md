@@ -83,6 +83,7 @@ npx prisma studio # in the project directory
 ```
 
 
+
 ## Form and CSRF Stuff
 
 ### Before you start make sure you can see the form and have seeded the database
@@ -139,3 +140,80 @@ npx prisma studio # in the project directory
 ![image](https://github.com/vishal092002/nodejs_project/assets/77933963/0b81a0ef-0187-44d8-864d-edcf96c01318)
 
 ### note the 403 status code and that the button under login says "removed" which means that the CSRF token was removed from the form (since the button was pressed)
+
+
+### Using the @auth0/nextjs-auth0 library to handle authentication in a Next.js API route
+Inside project/src/app/api, create new route.js file with folder for authentication and add:
+```bash
+import { handleAuth } from ‘@auth0/nextjs-auth0’; /* imports the handleAuth function from the @auth0/nextjs-auth0 library */
+
+export const GET = handleAuth(); /* applies the handleAuth middleware to the GET request of API route to take care of authentication-related tasks */
+```
+
+
+
+### Making a route with a post controller method to insert records and making a test to send the data to the route (pets example)
+Create a new file for your API route in project/src/app/api folder, such as project/src/app/api/route.js - Inside the new API route, import the Prisma Client and the NextResponse with:
+```bash
+let prisma = require(“@/lib/prismaClient”);
+
+import { NextResponse } from "next/server";
+```
+
+
+
+### Get prisma client to fetch the list of pets from the database and returns a response
+Inside the new API route, add:
+```bash
+export async function GET(request) /* To handle HTTP GET requests to the API route */
+
+const pets = await prisma.pets.findMany(); /* Uses prisma client to query the database and retrieve a list of pets  */ 
+
+return NextResponse.json(pets); /* Creates a JSON response with the list of pets */
+```
+
+
+
+### To handle HTTP POST requests and create a new pet in the database
+Inside the new API route, add:
+```bash
+export async function POST(request) {
+  try {         
+
+/* Parses the JSON data from the request body
+    const json = await request.json(); */
+
+const pets = await prisma.pets.create({
+      data: json,
+    });
+
+// Creates a new pet in the database using Prisma
+
+
+  } catch (error) {
+
+    // Handles any errors that occur during the process
+    
+  }
+}
+```
+
+
+
+### To finalize the post function by constructing and returning a appropriate response
+```bash
+return new NextResponse(JSON.stringify(pets), { status: 201, headers: { "Content-Type": "application/json" } });
+
+/* Creates a response with a status of 201 and sets the Content-Type header to application/json */
+
+
+ } catch (error) {
+
+    // Handles any errors that occur during the process
+
+
+return new NextResponse(error.message, { status: 500 });
+
+/* Creates a response with a status of 500 and includes the error message in the response body */
+```
+
