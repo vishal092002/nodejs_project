@@ -4,13 +4,21 @@ import Form from "@/components/Form";
 import processForm from './action';
 import { headers } from 'next/headers';
 export default async function Home() {
-  const session = await getSession();
+  let session = null;
+  try {
+    session = await getSession();
+  } catch (error) {
+  session = {}
+  }
   let loggedIn = session && session.user && session.user["name"];
-  let JWTParssed =session? JSON.parse(Buffer.from(session?.idToken.split('.')[1], 'base64').toString()):{};
+  let JWTParssed =loggedIn? JSON.parse(Buffer.from(session?.idToken.split('.')[1], 'base64').toString()):{};
   const csrfToken = headers().get('X-CSRF-Token') || 'missing';
   return ( 
     <main className={styles.main}> 
       <h1 className={styles.title}>Hello {loggedIn ? session.user["name"] : "World"}!</h1>
+      {!loggedIn && (<>
+        <p style={{textAlign: "center",color: "red"}}>You are missing the .env file</p>
+      </>)}
       <a href={loggedIn ? "/api/auth/logout" : "/api/auth/login"}>{loggedIn ? "Logout" : "Login"}</a>
       {loggedIn && (<>
         <h3 className={styles.JWT} >JWT:</h3>
