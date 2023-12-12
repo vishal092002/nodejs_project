@@ -1,5 +1,5 @@
 import { headers } from "next/headers";
-import { loginAction } from "./action";
+import { loginAction ,signupAction} from "./action";
 import { LoginForm } from "@/components/LoginForm";
 
 export default async function Page() {
@@ -7,7 +7,7 @@ export default async function Page() {
   return (
     <>
     
-<LoginForm loginAction={loginAction} csrfToken={csrfToken} />
+<LoginForm loginAction={loginAction} loginAction2={signupAction}  csrfToken={csrfToken} />
 
     </>
   )

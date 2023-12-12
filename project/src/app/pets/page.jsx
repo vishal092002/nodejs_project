@@ -41,6 +41,7 @@ export default async function Home() {
           ))}
         </pre>      
       </>)}
+      <a href="../">Logout</a>
       <Form processForm={processForm} csrfToken={csrfToken}/>{/* pass the processForm function to the Form component b/c we can only get it in a server context for some reason */}
     </main>
   )

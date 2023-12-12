@@ -11,6 +11,7 @@ useEffect(() => {
 try {
   // id = new URL(window.location.href).searchParams.get("id");
   setId(new URL(window.location.href).searchParams.get("id")) //get the id from the url query parameter
+  
   console.log(id);
   
 }catch(e){

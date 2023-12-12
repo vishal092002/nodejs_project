@@ -72,3 +72,27 @@ if(data.status===200){
 previousState.data=await data.json();
 return previousState;
 }
+
+export async function signupAction(previousState, FormData){
+    let email = FormData.get("email");
+    let name = FormData.get("name");
+    let baseURL = FormData.get("BASE_URL");
+    console.log(email);
+    //get the user from the database
+    let data = await fetch(baseURL+"/api/user",{  
+        "method": "POST",
+        "cache": 'no-store',
+        "headers":{
+            "content-type":"application/json",
+        },
+        "body":JSON.stringify({"email":email,"name":name}),
+        });
+    if(data.status===200){
+        console.log(data);
+        
+    }else{
+        console.log(data);
+    }
+    previousState.data=await data.json();
+    return previousState;
+}
