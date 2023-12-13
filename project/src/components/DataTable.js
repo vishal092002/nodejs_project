@@ -2,7 +2,6 @@
 export default function DataTable({state, FormElms, baseurl, action, selectedSchema, csrfToken,uid}) {
     return (
         <>
-        {uid}
             <h1>Result</h1>        
                                 <form action={action}>   
                                    <input type="hidden" name="method" value="GET" />

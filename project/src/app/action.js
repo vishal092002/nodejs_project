@@ -1,4 +1,8 @@
 "use server";
+
+import { cookies } from "next/headers";
+import sha256 from 'crypto-js/sha256';
+import { redirect } from "next/navigation";
 export default async function processForm(previousState, FormData){
 // this is where we assign the form data to variables
    const id = parseInt(FormData.get("id"));
@@ -51,6 +55,9 @@ return previousState; //return the previous state object regardless of whether o
 }
 
 export async function loginAction(previousState, FormData){
+    if(!previousState){
+        previousState={};
+    }
 let email = FormData.get("email");
 let baseURL = FormData.get("BASE_URL");
 console.log(email);
@@ -68,12 +75,41 @@ if(data.status===200){
     
 }else{
     console.log(data);
+    if (data.status===404){
+       redirect("/");
+    }
+
 }
 previousState.data=await data.json();
+
+const header = {
+  "alg": "HS256",
+  "typ": "JWT"
+}
+const encodedHeaders = btoa(JSON.stringify(header))
+const claims = {
+   "email":email,
+   "baseURL":baseURL,
+}
+const encodedPlayload = btoa(JSON.stringify(claims))
+const signature = sha256(`${encodedHeaders}.${encodedPlayload}`, "I LOVE AVACODOS MORE THAN I LOVE MYSELF, I EAT THEM EVERY DAY, LIKE A LOT OF THEM, I EAT A LOT OF AVACODOS BECAUSE I LOVE THEM!!!")
+const encodedSignature = btoa(signature)
+
+const jwt = `${encodedHeaders}.${encodedPlayload}.${encodedSignature}`
+cookies().set("jwt", jwt, {
+    httpOnly: true,
+    secure: true,
+    sameSite: "strict",
+    path: "/",
+    expires: new Date(Date.now() + 1000 * 60 * 60 * 24 * 365),
+    })
 return previousState;
 }
 
 export async function signupAction(previousState, FormData){
+    if(!previousState){
+        previousState={};
+    }
     let email = FormData.get("email");
     let name = FormData.get("name");
     let baseURL = FormData.get("BASE_URL");

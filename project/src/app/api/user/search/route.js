@@ -35,6 +35,9 @@ export async function POST(request) {
         email: json.email,
       },
     });
+if(user.length === 0){
+  return new NextResponse("User not found", { status: 404 });
+}
 
     return new NextResponse
     (JSON.stringify(user), { 

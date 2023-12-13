@@ -3,22 +3,14 @@ import { useFormState } from 'react-dom'
 import { useEffect, useRef, useState } from "react";
 import DataTable from './DataTable';
 
-export default function Form({processForm, csrfToken}) {
+export default function Form({processForm, csrfToken,user}) {
 let [origin, setOrigin] = useState('') //set the origin to the current window location, we need this for the form action to know where to send the data since we are using a relative path in the action
-let [id, setId] = useState(null) //set the id to null, we will get this from the url query parameter
 useEffect(() => {
   setOrigin(window.location.origin) //this is in a useEffect because we can't get the window object on the server and useEffect only runs on the client
-try {
-  // id = new URL(window.location.href).searchParams.get("id");
-  setId(new URL(window.location.href).searchParams.get("id")) //get the id from the url query parameter
-  
-  console.log(id);
-  
-}catch(e){
-  window.location.href="/";
-}
 }, [])
-
+let id = user[0].id
+let email = user[0].email
+let name = user[0].name
 // console.log(id);
 let [CSRFToken, setCSRFToken] = useState(csrfToken)
 let FormElms = useRef({id: null, name: null, email: null, petType: null, petName: null,userID: null, method: null});
