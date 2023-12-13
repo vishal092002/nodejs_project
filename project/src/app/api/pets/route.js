@@ -1,15 +1,25 @@
 let prisma = require("@/lib/prismaClient");
 import { NextResponse } from "next/server";
 
-export async function GET(request) {
-  const pets = await prisma.pets.findMany();
+export async function GET(request, { params }) {
+  const userid =new URL(request.url).searchParams.get("userid");
+  const pets = await prisma.pets.findMany(
+    {
+      where: {
+        userId: parseInt(userid),
+      },
+    }
+  );
   return NextResponse.json(pets);
 }
 
-export async function POST(request) {
+export async function POST(request, { params }) {
   try {
+    const userid =new URL(request.url).searchParams.get("userid");
     const json = await request.json();
-
+    //assign the user id to the pet
+    Object.assign(json, { userId: parseInt(userid) });  
+    console.log(json);
     const pets = await prisma.pets.create({
       data: json,
     });
