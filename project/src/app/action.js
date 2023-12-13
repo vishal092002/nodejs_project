@@ -1,4 +1,8 @@
 "use server";
+
+import { cookies } from "next/headers";
+import {sha256} from 'js-sha256';
+import { redirect } from "next/navigation";
 export default async function processForm(previousState, FormData){
 // this is where we assign the form data to variables
    const id = parseInt(FormData.get("id"));
@@ -9,13 +13,15 @@ export default async function processForm(previousState, FormData){
    const petName= FormData.get("petName");
    const schema = FormData.get("schema");
    const baseURL = FormData.get("BASE_URL");
+   const userid = FormData.get("userid");
 // this is where we create the data object that we will send to the server (for POST and PATCH) it only includes the properties that are not null from the form data
    const dataJson = Object.assign( //create a new object, and add the following properties to it if they exist
         {},
         email && { email: email },
         name && { name: name },
         petType && { type: petType },
-        petName && { name: petName }
+        petName && { name: petName },
+        // userid && { userid: userid }
       );
 
 let fetchUrl=baseURL+"/api/"+schema+"/" //create the fetch url based on the schema and the method
@@ -32,6 +38,10 @@ if(method==="POST"||method==="PATCH"){//check the method and add the appropriate
         "body":JSON.stringify(dataJson),
         });
 }
+console.log(userid);
+if(userid){
+    fetchUrl=fetchUrl+"?userid="+userid;
+}
 console.log(fetchUrl,fetchData);
 let data = await fetch(fetchUrl,fetchData); //fetch the data with the fetch url and the fetch data we created earlier
 try{
@@ -42,4 +52,83 @@ try{
     Object.assign(previousState?previousState:{},{"error":data.statusText, "code":data.status,"data":json});
 }
 return previousState; //return the previous state object regardless of whether or not we were able to parse the data as JSON
+}
+
+export async function loginAction(previousState, FormData){
+    if(!previousState){
+        previousState={};
+    }
+let email = FormData.get("email");
+let baseURL = FormData.get("BASE_URL");
+console.log(email);
+//get the user from the database
+let data = await fetch(baseURL+"/api/user/search",{  
+    "method": "POST",
+    "cache": 'no-store',
+    "headers":{
+        "content-type":"application/json",
+    },
+    "body":JSON.stringify({"email":email}),
+    });
+if(data.status===200){
+    console.log(data);
+    
+}else{
+    console.log(data);
+    if (data.status===404){
+       redirect("/");
+    }
+
+}
+previousState.data=await data.json();
+
+const header = {
+  "alg": "HS256",
+  "typ": "JWT"
+}
+const encodedHeaders = btoa(JSON.stringify(header))
+const claims = {
+   "email":email,
+   "baseURL":baseURL,
+}
+const encodedPlayload = btoa(JSON.stringify(claims))
+const signature = sha256(`${encodedHeaders}.${encodedPlayload}`, "I LOVE AVACODOS MORE THAN I LOVE MYSELF, I EAT THEM EVERY DAY, LIKE A LOT OF THEM, I EAT A LOT OF AVACODOS BECAUSE I LOVE THEM!!!")
+const encodedSignature = btoa(signature)
+
+const jwt = `${encodedHeaders}.${encodedPlayload}.${encodedSignature}`
+cookies().set("jwt", jwt, {
+    httpOnly: true,
+    secure: true,
+    sameSite: "strict",
+    path: "/",
+    expires: new Date(Date.now() + 1000 * 60 * 60 * 24 * 365),
+    })
+return previousState;
+}
+
+export async function signupAction(previousState, FormData){
+    if(!previousState){
+        previousState={};
+    }
+    let email = FormData.get("email");
+    let name = FormData.get("name");
+    let baseURL = FormData.get("BASE_URL");
+    console.log(email);
+    //get the user from the database
+    let data = await fetch(baseURL+"/api/user",{  
+        "method": "POST",
+        "cache": 'no-store',
+        "headers":{
+            "content-type":"application/json",
+        },
+        "body":JSON.stringify({"email":email,"name":name}),
+        });
+    if(data.status===200){
+        console.log(data);
+        
+    }else{
+        console.log(data);
+    }
+    previousState.data=await data.json();
+    return previousState;
 }

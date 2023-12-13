@@ -5,10 +5,13 @@ export async function GET(
   request,
   { params }
 ) {
-  const id = parseInt(params.id);
+   const userid =new URL(request.url).searchParams.get("userid");
+    console.log("userid", userid);
+     const id = parseInt(params.id);
   const pet = await prisma.pets.findUnique({
     where: {
       id,
+    userId: parseInt(userid),
     },
   });
 
@@ -23,11 +26,13 @@ export async function PATCH(
   request,
   { params }
 ) {
-  const id = parseInt(params.id);
+   const userid =new URL(request.url).searchParams.get("userid");
+    console.log("userid", userid);
+     const id = parseInt(params.id);
   let json = await request.json();
-
   const updated_pet = await prisma.pets.update({
-    where: { id },
+    where: { id,
+    userId: parseInt(userid), },
     data: json,
   });
 
@@ -43,14 +48,17 @@ export async function DELETE(
   { params }
 ) {
   try {
-    const id = parseInt(params.id);
+     const userid =new URL(request.url).searchParams.get("userid");
+    console.log("userid", userid);
+     const id = parseInt(params.id);
     await prisma.pets.delete({
-      where: { id },
+      where: { id,
+        userId: parseInt(userid), }
     });
 
     return new NextResponse(null, { status: 204 });
   } catch (error) {
-    
+    console.log(error);
 
     return new NextResponse(error.message, { status: 500 });
   }

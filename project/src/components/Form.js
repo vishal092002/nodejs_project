@@ -3,14 +3,18 @@ import { useFormState } from 'react-dom'
 import { useEffect, useRef, useState } from "react";
 import DataTable from './DataTable';
 
-export default function Form({processForm, csrfToken}) {
+export default function Form({processForm, csrfToken,user}) {
 let [origin, setOrigin] = useState('') //set the origin to the current window location, we need this for the form action to know where to send the data since we are using a relative path in the action
 useEffect(() => {
   setOrigin(window.location.origin) //this is in a useEffect because we can't get the window object on the server and useEffect only runs on the client
 }, [])
+let id = user[0].id
+let email = user[0].email
+let name = user[0].name
+// console.log(id);
 let [CSRFToken, setCSRFToken] = useState(csrfToken)
 let FormElms = useRef({id: null, name: null, email: null, petType: null, petName: null,userID: null, method: null});
-    const [selectedSchema, setSelectedSchema] = useState('user');//set the default schema to user, this will be used to determine which radio button is selected
+    const [selectedSchema, setSelectedSchema] = useState('pets');//set the default schema to user, this will be used to determine which radio button is selected
 let result ={} // the default result object, this will be used to store the result of the form submission
 const [state, formAction] = useFormState(processForm,result);  //a new react hook (https://react.dev/reference/react-dom/hooks/useFormStatus) that is like useState but it get the result of the form submission in the server action and can send it back to the client  -this takes in the form action we make and returns a new form action that we can use in the form action attribute, it also takes in the default result object and returns the result object with the data from the form submission
     return (
@@ -23,12 +27,13 @@ const [state, formAction] = useFormState(processForm,result);  //a new react hoo
         <form action={formAction}>
         <input type="hidden" name="csrf_token" value={CSRFToken} />
         <input type="hidden" name="BASE_URL" value={origin} />
+        <input type="hidden" name="userid" value={id} />
             <div className="schema">
-        <label htmlFor="user">Schema: User </label>
-        <input type="radio" name="schema" id="user" value="user"  checked={selectedSchema==="user"} onChange={() => setSelectedSchema('user')}/>
+        {/* <label htmlFor="user">Schema: User </label> */}
+        {/* <input type="hidden" name="schema" id="user" value="user"  checked={selectedSchema==="user"} onChange={() => setSelectedSchema('user')}/> */}
          <br />
         <label htmlFor="pet">Schema:  Pet </label>
-        <input type="radio" name="schema" id="pet" value="pets" checked={selectedSchema==="pets"} onChange={() => setSelectedSchema('pets')}/>
+        <input type="hidden" name="schema" id="pet" value="pets" checked={selectedSchema==="pets"} onChange={() => setSelectedSchema('pets')}/>
       </div>
 
 
@@ -83,6 +88,7 @@ const [state, formAction] = useFormState(processForm,result);  //a new react hoo
       </div>
     </form>
     <DataTable FormElms={FormElms} state={state} baseurl={origin} action={formAction} selectedSchema={selectedSchema} csrfToken={CSRFToken}
+    uid={id}
     />
 
       </>
