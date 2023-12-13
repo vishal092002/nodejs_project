@@ -1,7 +1,7 @@
 "use server";
 
 import { cookies } from "next/headers";
-import sha256 from 'crypto-js/sha256';
+import {sha256} from 'js-sha256';
 import { redirect } from "next/navigation";
 export default async function processForm(previousState, FormData){
 // this is where we assign the form data to variables
